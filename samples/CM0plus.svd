@@ -225,6 +225,20 @@
                     <dim>8</dim>
                     <dimIncrement>0x1</dimIncrement>
                     <dimIndex>4-11</dimIndex>
+                    <fields>
+                        <field>
+                            <name>RESERVED</name>
+                            <description>Reserved</description>
+                            <bitOffset>0</bitOffset>
+                            <bitWidth>6</bitWidth>
+                        </field>
+                        <field>
+                            <name>PRI</name>
+                            <description>Priority Bits</description>
+                            <bitOffset>6</bitOffset>
+                            <bitWidth>2</bitWidth>
+                        </field>
+                    </fields>
                 </register>
                 <register>
                     <name>SHCSR</name>
@@ -288,6 +302,20 @@
                     <dim>32</dim>
                     <dimIncrement>0x1</dimIncrement>
                     <dimIndex>0-31</dimIndex>
+                    <fields>
+                        <field>
+                            <name>RESERVED</name>
+                            <description>Reserved</description>
+                            <bitOffset>0</bitOffset>
+                            <bitWidth>6</bitWidth>
+                        </field>
+                        <field>
+                            <name>PRI</name>
+                            <description>Priority Bits</description>
+                            <bitOffset>6</bitOffset>
+                            <bitWidth>2</bitWidth>
+                        </field>
+                    </fields>
                 </register>
             </registers>
         </peripheral>
