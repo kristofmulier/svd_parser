@@ -148,7 +148,7 @@ if __name__ == '__main__':
 # REFACTORING THE CODE TO HANDLE REGISTER ARRAYS
 # ==============================================
 # Before the latest change, where the code was refactored to handle register arrays, the output for
-# the NVIC_IP register was as follows:
+# the NVIC_IP register from the Cortex-M0+ was as follows:
 #
 #     typedef struct __attribute__((__packed__)) {
 #         uint32_t : 32;
@@ -178,7 +178,7 @@ if __name__ == '__main__':
 #
 # 
 #
-# The NVIC_IP register has no fields. Its SVD snippet is:
+# The NVIC_IP register had no fields. Its SVD snippet was:
 #
 #     <register>
 #         <name>IP</name>
@@ -191,7 +191,7 @@ if __name__ == '__main__':
 #         <dimIndex>0-31</dimIndex>
 #     </register>
 #
-# Now for the sake of testing, let's define a few fields in there:
+# After an SVD update, it now has fields:
 #
 #     <register>
 #         <name>IP</name>
@@ -205,42 +205,32 @@ if __name__ == '__main__':
 #         <fields>
 #             <field>
 #                 <name>RESERVED</name>
+#                 <description>Reserved</description>
 #                 <bitOffset>0</bitOffset>
-#                 <bitWidth>4</bitWidth>
-#                 <description>Reserved bits</description>
+#                 <bitWidth>6</bitWidth>
 #             </field>
 #             <field>
-#                 <name>SUBPRIORITY</name>
-#                 <bitOffset>4</bitOffset>
-#                 <bitWidth>2</bitWidth>
-#                 <description>Subpriority level</description>
-#             </field>
-#             <field>
-#                 <name>PREEMPTPRIORITY</name>
+#                 <name>PRI</name>
+#                 <description>Priority Bits</description>
 #                 <bitOffset>6</bitOffset>
 #                 <bitWidth>2</bitWidth>
-#                 <description>Preempt priority level</description>
 #             </field>
 #         </fields>
 #     </register>
 # 
-# The output for this would be:
+# The output for this is:
 #
 #     typedef struct __attribute__((__packed__)) {
-#         uint8_t RESERVED: 4;
-#         uint8_t SUBPRIORITY: 2;
-#         uint8_t PREEMPTPRIORITY: 2;
+#         uint8_t RESERVED: 6;
+#         uint8_t PRI: 2;
 #     } NVIC_IPbits_t;
 #     #define NVIC_IP ((volatile uint8_t *)0xe000e400)
 #     #define NVIC_IPbits ((volatile NVIC_IPbits_t *)0xe000e400)
 #
 # Again, notice that the NVIC_IP is not dereferenced. You can use the array syntax to do that:
 #
-#     NVIC_IPbits[9].SUBPRIORITY = 1;
-#     NVIC_IPbits[9].PREEMPTPRIORITY = 2;
+#     NVIC_IPbits[9].PRI = 0b10;
 # Or:
 #     NVIC_IPbits_t ip_bits;
-#     ip_bits.RESERVED = 0;
-#     ip_bits.SUBPRIORITY = 1;
-#     ip_bits.PREEMPTPRIORITY = 2;
+#     ip_bits.PRI = 0b10;
 #     NVIC_IPbits[9] = ip_bits;
