@@ -105,7 +105,10 @@ def extract_typedef(register: ET.Element,
 
     else:
         # Register is not an array
-        register_size = int(register.find('size').text)
+        try:
+            register_size = int(register.find('size').text)
+        except ValueError:
+            register_size = int(register.find('size').text, 16)
         register_type = get_register_type(register_size)
 
         register_address = hex(
